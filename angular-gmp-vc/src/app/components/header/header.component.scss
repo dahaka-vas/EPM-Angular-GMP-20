@@ -1,0 +1,9 @@
+@import "../../../scss/colors.scss";
+
+.header {
+    background: $granite-grey;
+    color: $white;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+}
