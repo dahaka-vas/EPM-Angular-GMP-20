@@ -1,0 +1,12 @@
+@import "../scss/colors.scss";
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content{
+    background-color: $light-grey;
+    flex-grow: 1;
+}
