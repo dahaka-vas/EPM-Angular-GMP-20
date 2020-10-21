@@ -1,0 +1,12 @@
+@import "../../../scss/colors.scss";
+
+:host {
+    background: $white;
+    height: 64px;
+}
+
+.breadcrumbs {
+    width: 100%;
+    max-width: 1150px;
+    padding: 0 20px;
+}

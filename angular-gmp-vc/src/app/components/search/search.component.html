@@ -1,2 +1,11 @@
-<input>
-<button>Search</button>
+<div class="search-course">
+    <input
+        class="search-course__input"
+        placeholder="Type to search"
+        [(ngModel)]="searchText"
+    >
+    <button
+        class="search-course__button"
+        (click)="findCourse()"
+    >Search</button>
+</div>

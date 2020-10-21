@@ -1,7 +1,15 @@
 <div class="course-item">
-    <!-- {{ courseItem | json}} -->
-    <div class="course-item__name">{{ courseItem.title }}</div>
-    <div class="course-item__details">{{ courseItem.creationDate }}</div>
-    <div class="course-item__details">duration {{ courseItem.duration }} min</div>
+    <div class="course-item__name">Video Course {{ orderItemNumber }}. {{ courseItem.title }}</div>
+    <div class="course-item__details-panel">
+        <span class="course-item__details course-item__details--duration">{{ courseDuration }}</span>
+        <span class="course-item__details course-item__details--date">{{ courseCreationDate }}</span>
+    </div>
     <div class="course-item__description">{{ courseItem.description }}</div>
+    <div class="course-item__control-panel">
+        <button class="course-item__button course-item__button--edit">Edit</button>
+        <button
+            class="course-item__button course-item__button--delete"
+            (click)="deleteCourse()"
+        >Delete</button>
+    </div>
 </div>

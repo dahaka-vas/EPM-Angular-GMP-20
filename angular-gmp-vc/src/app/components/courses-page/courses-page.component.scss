@@ -1,4 +1,7 @@
 .courses-page {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 1150px;
+    padding: 0 20px;
 }

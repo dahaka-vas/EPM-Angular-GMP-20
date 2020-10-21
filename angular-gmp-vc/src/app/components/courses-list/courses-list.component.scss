@@ -1,0 +1,48 @@
+@import "../../../scss/colors.scss";
+
+.course-list {
+    display: flex;
+    flex-direction: column;
+
+    &__button {
+        border: none;
+        &--add-course {
+            color: $white;
+            border-radius: 3px;
+            background: $blue;
+            padding: 10px;
+            position: relative;
+            top: -5px;
+            padding-left: 34px;
+            width: max-content;
+            align-self: flex-end;
+
+            &:before {
+                content: '';
+                background: url("../../../assets/icons/add.svg") no-repeat;
+                width: 16px;
+                height: 16px;
+                display: inline-block;
+                position: absolute;
+                left: 10px;
+            }
+        }
+
+        &--load-more {
+            border-radius: 6px;
+            background: $white;
+            box-shadow: 0 1px 2px 0 rgba(29, 30, 38, 0.102), 0 2px 10px 0 rgba(29, 30, 37, 0.15);
+            padding: 6px;
+            margin: 12px 0;
+            line-height: 24px;
+            color: $purple-blue;
+            font-size: 12px;
+            width: 100%;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+}
