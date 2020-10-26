@@ -1,9 +1,20 @@
 @import "../../../scss/colors.scss";
 
-.footer {
+:host {
     background: $granite-grey;
     color: $white;
     height: 60px;
+
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer {
     display: flex;
     justify-content: flex-end;
+    width: 100%;
+    max-width: 1150px;
+    padding: 0 20px;
 }

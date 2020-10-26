@@ -1,9 +1,21 @@
 @import "../../../scss/colors.scss";
 
-.header {
+:host {
     background: $granite-grey;
     color: $white;
     height: 60px;
+}
+
+.header {
     display: flex;
+    width: 100%;
+    max-width: 1150px;
+    padding: 0 20px;
     justify-content: space-between;
+}
+
+button {
+    border: none;
+    background-color: inherit;
+    color: $white;
 }

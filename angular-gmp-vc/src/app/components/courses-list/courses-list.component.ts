@@ -1,33 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { ICourseItem } from 'src/app/models/course-item';
+import { Component, OnChanges, OnInit } from '@angular/core';
+import { ICourseItem } from 'src/app/models/course-item.models';
+import { COURSES } from './courses-list.mock';
 
 @Component({
     selector: 'gmp-vc-courses-list',
     templateUrl: './courses-list.component.html',
     styleUrls: ['./courses-list.component.scss'],
 })
-export class CoursesListComponent implements OnInit {
+export class CoursesListComponent implements OnInit, OnChanges {
 
-    constructor() { }
+    public courseList!: ICourseItem[];
 
-    public courseList: ICourseItem[] = [
-        {
-            id: 1,
-            title: '1',
-            creationDate: new Date(),
-            duration: 10,
-            description: 'description',
-        },
-        {
-            id: 2,
-            title: '2',
-            creationDate: new Date(),
-            duration: 10,
-            description: 'description',
-        },
-    ];
+    constructor() {
+        console.log('CoursesListComponent -> constructor');
+    }
 
-    ngOnInit(): void {
+    public ngOnChanges(): void {
+        console.log('CoursesListComponent -> ngOnChanges');
+    }
+
+    public ngOnInit(): void {
+        console.log('CoursesListComponent -> ngOnInit');
+        this.courseList = COURSES;
+    }
+
+    public loadCourses(): void {
+        console.log('Load more courses');
+    }
+
+    public deleteCourse(id: number): void {
+        console.log(`Delete course with id: ${id}`);
     }
 
 }

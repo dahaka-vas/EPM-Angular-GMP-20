@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'gmp-vc-courses-page',
     templateUrl: './courses-page.component.html',
-    styleUrls: ['./courses-page.component.scss']
+    styleUrls: ['./courses-page.component.scss'],
 })
-export class CoursesPageComponent implements OnInit {
-
-    constructor() { }
-
-    ngOnInit(): void {
-    }
+export class CoursesPageComponent {
 
 }

@@ -1,3 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "../node_modules/normalize.css/normalize.css";
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('./assets/fonts/source-sans-pro/SourceSansPro-Regular.ttf') format('ttf');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('./assets/fonts/source-sans-pro/SourceSansPro-SemiBold.ttf') format('ttf');
+    font-weight: 600;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Source Sans Pro', Tahoma, sans-serif;
+    font-size: 14px;
+    min-width: 320px;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+button {
+    cursor: pointer;
+}

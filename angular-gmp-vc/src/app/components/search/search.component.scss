@@ -1,0 +1,30 @@
+@import "../../../scss/colors.scss";
+
+.search-course {
+    & > * {
+        margin-right: 12px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    &__input {
+        padding: 9px 12px;
+        border-radius: 3px;
+        border: 1px solid #CED0DB;
+
+        &::placeholder {
+            color: #ACAFBF;;
+        }
+    }
+
+    &__button {
+        padding: 9px 12px;
+        border: none;
+        color: $white;
+        background: $green;
+        border: 1px solid $green;
+        border-radius: 3px;
+    }
+}

@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'gmp-vc-search',
     templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss']
+    styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
+    public searchText = '';
 
-    constructor() { }
-
-    ngOnInit(): void {
+    public findCourse(): void {
+        console.log(`Find course with '${this.searchText}' value`);
     }
-
 }
