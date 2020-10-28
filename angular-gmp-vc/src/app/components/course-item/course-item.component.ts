@@ -9,7 +9,6 @@ import { ICourseItem } from 'src/app/models/course-item.models';
 export class CourseItemComponent implements OnInit, OnChanges {
 
     @Input() public courseItem!: ICourseItem;
-    @Input() public orderItemNumber = 1;
 
     @Output() public deleteCourseByID = new EventEmitter<number>();
 

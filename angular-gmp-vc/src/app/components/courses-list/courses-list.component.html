@@ -2,9 +2,8 @@
     <!-- <gmp-vc-search></gmp-vc-search> -->
     <button class="course-list__button course-list__button--add-course">Add course</button>
         <gmp-vc-course-item
-            *ngFor="let courseItem of courseList; let i = index"
+            *ngFor="let courseItem of courseList"
             [courseItem]="courseItem"
-            [orderItemNumber]="i + 1"
             (deleteCourseByID)="deleteCourse($event)"
         ></gmp-vc-course-item>
     <button
