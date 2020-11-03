@@ -11,6 +11,10 @@ import { CoursesListComponent } from './components/courses-list/courses-list.com
 import { CourseItemComponent } from './components/course-item/course-item.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoursePlateBorderDirective } from './directives/course-plate-border.directive';
+import { DurationPipe } from './pipes/duration.pipe';
+import { OrderByPipe } from './pipes/order-by.pipe';
+import { FilterCoursesPipe } from './pipes/filter.pipe';
 
 @NgModule({
     declarations: [
@@ -22,6 +26,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         CoursesListComponent,
         CourseItemComponent,
         FooterComponent,
+        CoursePlateBorderDirective,
+        DurationPipe,
+        OrderByPipe,
+        FilterCoursesPipe,
     ],
     imports: [
         BrowserModule,

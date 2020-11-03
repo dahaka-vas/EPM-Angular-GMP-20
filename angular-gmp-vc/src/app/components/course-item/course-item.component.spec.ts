@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 
 import { CourseItemComponent } from './course-item.component';
 import { COURSES } from '../courses-list/courses-list.mock';
+import { DurationPipe } from 'src/app/pipes/duration.pipe';
 
 describe('CourseItemComponent', () => {
     let component: CourseItemComponent;
@@ -10,7 +11,7 @@ describe('CourseItemComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ CourseItemComponent ]
+            declarations: [ CourseItemComponent, DurationPipe ],
         })
         .compileComponents();
     });
@@ -41,17 +42,5 @@ describe('CourseItemComponent', () => {
         const consoleSpy = spyOn(console, 'log');
         component.ngOnChanges();
         expect(consoleSpy).toHaveBeenCalled();
-    });
-
-    it('should return duration with hours (`H h MMm` value)', () => {
-        const minutes = 100;
-        // tslint:disable-next-line: no-any
-        expect((component as any).getCourseFormattedDuration(minutes)).toContain('h');
-    });
-
-    it('should return duration without hours (`MMm` value)', () => {
-        const minutes = 50;
-        // tslint:disable-next-line: no-any
-        expect((component as any).getCourseFormattedDuration(minutes)).not.toContain('h');
     });
 });
