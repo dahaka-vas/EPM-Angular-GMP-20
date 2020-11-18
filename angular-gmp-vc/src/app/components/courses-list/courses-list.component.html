@@ -1,13 +1,20 @@
 <div class="course-list">
-    <!-- <gmp-vc-search></gmp-vc-search> -->
+    <gmp-vc-search (search)="searchCourse($event)"></gmp-vc-search>
     <button class="course-list__button course-list__button--add-course">Add course</button>
+    <ng-container *ngIf="courseList.length">
         <gmp-vc-course-item
-            *ngFor="let courseItem of courseList"
+            *ngFor="let courseItem of courseList | orderBy:'creationDate':-1"
             [courseItem]="courseItem"
             (deleteCourseByID)="deleteCourse($event)"
         ></gmp-vc-course-item>
-    <button
-        class="course-list__button course-list__button--load-more"
-        (click)="loadCourses()"
-    >Load more</button>
+        <button
+            class="course-list__button course-list__button--load-more"
+            (click)="loadCourses()"
+        >Load more</button>
+    </ng-container>
+    <ng-container *ngIf="!courseList.length">
+        <div class="course-list__no-data">
+            No data. Feel free to add new course
+        </div>
+    </ng-container>
 </div>

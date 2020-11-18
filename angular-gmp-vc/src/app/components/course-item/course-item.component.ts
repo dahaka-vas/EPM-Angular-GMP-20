@@ -12,9 +12,6 @@ export class CourseItemComponent implements OnInit, OnChanges {
 
     @Output() public deleteCourseByID = new EventEmitter<number>();
 
-    public courseCreationDate = '';
-    public courseDuration = '';
-
     constructor() {
         console.log('CourseItemComponent -> constructor');
     }
@@ -25,18 +22,9 @@ export class CourseItemComponent implements OnInit, OnChanges {
 
     public ngOnInit(): void {
         console.log('CourseItemComponent -> ngOnInit');
-        this.courseCreationDate = `${this.courseItem.creationDate.getMonth() + 1}/${this.courseItem.creationDate.getDate()}/${this.courseItem.creationDate.getFullYear()}`;
-        this.courseDuration = this.getCourseFormattedDuration(this.courseItem.duration);
     }
 
     public deleteCourse(): void {
         this.deleteCourseByID.emit(this.courseItem.id);
     }
-
-    private getCourseFormattedDuration(mins: number): string {
-        const hours = Math.floor(mins / 60);
-        const minutes = mins % 60;
-        return (hours ? `${hours}h ` : '') + `${minutes} min`;
-    }
-
 }
