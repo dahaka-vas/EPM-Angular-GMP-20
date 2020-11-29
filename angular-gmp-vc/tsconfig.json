@@ -19,7 +19,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@gmp-vc-components/*": ["src/app/components/*"],
+      "@gmp-vc-services/*": ["src/app/services/*"],
+      "@gmp-vc-directives/*": ["src/app/directives/*"],
+      "@gmp-vc-pipes/*": ["src/app/pipes/*"],
+    }
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

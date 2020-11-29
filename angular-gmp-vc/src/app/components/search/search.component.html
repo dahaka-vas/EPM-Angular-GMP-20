@@ -3,6 +3,7 @@
         class="search-course__input"
         placeholder="Type to search"
         [(ngModel)]="searchText"
+        (keyup.enter)="findCourse()"
     >
     <button
         class="search-course__button"

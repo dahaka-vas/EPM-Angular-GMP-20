@@ -3,6 +3,10 @@
 :host {
     background: $white;
     height: 64px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .breadcrumbs {

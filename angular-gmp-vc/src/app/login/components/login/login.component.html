@@ -1,0 +1,17 @@
+<form
+    class="login"
+    [formGroup]="form"
+    (submit)="login()"
+>
+    <span class="login__title">Login</span>
+    <div class="login__form-control login__form-control--required">
+        <label class="login__label">E-mail:<input [formControlName]="'email'" type="e-mail" placeholder="Enter e-mail" class="login__input"></label>
+    </div>
+    <div class="login__form-control login__form-control--required">
+        <label class="login__label">Password:<input [formControlName]="'password'" type="password" placeholder="Enter password" class="login__input"></label>
+    </div>
+    <div class="login__control-panel">
+        <span class="login__forgot-password">Forgot password?</span>
+        <button type="submit" class="login__button" [disabled]="!form.valid">Login</button>
+    </div>
+</form>
