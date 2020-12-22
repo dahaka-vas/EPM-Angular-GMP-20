@@ -1,8 +1,10 @@
 <header class="header">
     <span>logo</span>
 
-    <span>
-        <button>User login</button>
-        <button>Log out</button>
+    <span *ngIf="isAuthenticated">
+        <button class="header__login-button">User login</button>
+        <button class="header__login-button" (click)="logout()">Log out</button>
     </span>
 </header>
+
+<gmp-vc-breadcrumbs-nav *ngIf="isAuthenticated"></gmp-vc-breadcrumbs-nav>

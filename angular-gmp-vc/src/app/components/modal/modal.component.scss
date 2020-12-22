@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(#858997, 0.5);
+    z-index: 20;
+    top: 0;
+    left: 0;
+}
+
+.modal-wrapper {
+    position: relative;
+}

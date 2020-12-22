@@ -1,21 +1,26 @@
 @import "../../../scss/colors.scss";
 
 :host {
+    flex-direction: column;
     background: $granite-grey;
-    color: $white;
-    height: 60px;
 }
 
 .header {
+    align-items: center;
+    color: $white;
+    height: 60px;
     display: flex;
     width: 100%;
     max-width: 1150px;
     padding: 0 20px;
     justify-content: space-between;
-}
 
-button {
-    border: none;
-    background-color: inherit;
-    color: $white;
+    &__login-button {
+        border: none;
+        background-color: inherit;
+        color: $white;
+        &:not(:first-child) {
+            margin-left: 24px;
+        }
+    }
 }

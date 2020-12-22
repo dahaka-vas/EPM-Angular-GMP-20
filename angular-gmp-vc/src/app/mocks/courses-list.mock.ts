@@ -4,7 +4,7 @@ export const COURSES: ICourseItem[] = [
     {
         id: 1,
         title: 'Video Course 1. Some course title',
-        creationDate: getDate(15),
+        creationDate: getDate(30),
         duration: 100,
         description: 'Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description. Course descriptions report information about a university or college\'s classes. They\'re published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.',
         topRated: false,
@@ -37,6 +37,6 @@ export const COURSES: ICourseItem[] = [
 
 function getDate(difference: number): Date {
     const date = new Date();
-    date.setDate(difference);
+    date.setDate(new Date().getDate() + difference);
     return date;
 }

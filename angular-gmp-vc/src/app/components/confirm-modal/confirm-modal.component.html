@@ -1,0 +1,7 @@
+<form (submit)="confirm()">
+    <div class="modal-body">Do you really want to delete this course{{ course || ''}}?</div>
+    <div class="modal-footer">
+        <button type="button" (click)="dismiss()">No</button>
+        <button type="submit">Yes</button>
+    </div>
+</form>

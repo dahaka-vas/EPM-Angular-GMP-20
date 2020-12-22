@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { CourseItemComponent } from './course-item.component';
-import { COURSES } from '../courses-list/courses-list.mock';
+import { COURSES } from '../../mocks/courses-list.mock';
 import { DurationPipe } from 'src/app/pipes/duration.pipe';
 
 describe('CourseItemComponent', () => {

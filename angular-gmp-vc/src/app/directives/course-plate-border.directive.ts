@@ -1,31 +1,30 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 @Directive({
-    selector: '[courseCreationDate]',
+    selector: '.course-item[courseCreationDate]',
 })
 export class CoursePlateBorderDirective implements OnInit {
 
+    // tslint:disable-next-line: no-input-rename
     @Input('courseCreationDate') public date: Date = new Date(0);
 
     constructor(private element: ElementRef) { }
 
     public ngOnInit(): void {
-        let color;
+        let itemClass = '';
         const now = new Date();
-        const previousTwoWeeks = new Date(
-            new Date(now).getFullYear(),
-            new Date(now).getMonth(),
-            -12,
-        );
+        const twoWeeksAgo = new Date(new Date().setDate(now.getDate() - 14));
 
-        if (+this.date < +now && +this.date >= +previousTwoWeeks) {
-            color = 'var(--green-border)';
+        if (this.date < now && this.date >= twoWeeksAgo) {
+            itemClass = 'new-item';
         }
 
-        if (+this.date >= +now) {
-            color = 'var(--blue-border)';
+        if (this.date >= now) {
+            itemClass = 'future-item';
         }
 
-        this.element.nativeElement.style.boxShadow = `0 0 6px 0 ${color}, 0 0 12px 0 ${color}`;
+        if (itemClass) {
+            this.element.nativeElement.classList.add(itemClass);
+        }
     }
 }

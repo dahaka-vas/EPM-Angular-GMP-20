@@ -15,6 +15,9 @@ import { CoursePlateBorderDirective } from './directives/course-plate-border.dir
 import { DurationPipe } from './pipes/duration.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { FilterCoursesPipe } from './pipes/filter.pipe';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
     declarations: [
@@ -30,12 +33,15 @@ import { FilterCoursesPipe } from './pipes/filter.pipe';
         DurationPipe,
         OrderByPipe,
         FilterCoursesPipe,
+        ConfirmModalComponent,
+        ModalComponent,
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
+        LoginModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
