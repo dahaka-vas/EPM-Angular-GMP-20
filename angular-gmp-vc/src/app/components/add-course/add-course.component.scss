@@ -1,0 +1,106 @@
+@import "../../../scss/colors.scss";
+
+:host {
+    align-self: center;
+    width: 730px;
+}
+
+.new-course {
+    border-radius: 6px;
+    background: $white;
+    box-shadow: 0 1px 2px 0 rgba(29, 30, 38, 0.102), 0 2px 10px 0 rgba(29, 30, 37, 0.15);
+    padding: 24px;
+    color: $dark-grey;
+
+    &__title {
+        color: #333333;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        display: block;
+    }
+
+    &__form-control {
+        position: relative;
+        &--required:after {
+            content: '* required';
+            font-size: 12px;
+            position: absolute;
+            top: 2px;
+            right: 0;
+        }
+    }
+
+    &__input {
+        display: block;
+        margin: 8px 0 12px;
+        padding: 9px 12px;
+        outline: none;
+        line-height: 18px;
+        color: #ACAFBF;
+        border-radius: 3px;
+        border: 1px solid #CED0DB;
+        width: 100%;
+
+        &--description {
+            height: 108px;
+        }
+
+        &[placeholder] {
+            color: #ACAFBF;
+            font-weight: 200;
+        }
+
+        &::-moz-placeholder {
+            color: #ACAFBF;
+            font-weight: 200;
+        }
+
+        &:-moz-placeholder {
+            color: #ACAFBF;
+            font-weight: 200;
+        }
+
+        &:-ms-input-placeholder {
+            color: #ACAFBF;
+            font-weight: 200;
+        }
+
+        &::-webkit-input-placeholder {
+            color:#ACAFBF;
+            font-weight: 200;
+        }
+    }
+
+    &__label {
+        font-weight: 600;
+    }
+
+    &__buttons-panel {
+        margin-top: 24px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    &__button {
+        padding: 9px 12px;
+        border: 1px solid #CED0DB;
+        border-radius: 3px;
+
+        &--cancel {
+            background: #CED0DB;
+            color: #5b616f;
+        }
+
+        &--save:not([disabled]) {
+            color: $white;
+            background: $green;
+            border-color: $green;
+        }
+
+        &:not(:last-child) {
+            margin-right: 12px;
+        }
+    }
+}

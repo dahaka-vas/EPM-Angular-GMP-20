@@ -1,0 +1,41 @@
+<form
+    class="new-course"
+    [formGroup]="form"
+    (submit)="saveCourse()"
+>
+    <span class="new-course__title">New course</span>
+    <div class="new-course__form-control new-course__form-control--required">
+        <label class="new-course__label">
+            <span>Title:</span>
+            <input [formControlName]="'title'" type="text" placeholder="" class="new-course__input new-course__input--title">
+        </label>
+    </div>
+    <div class="new-course__form-control new-course__form-control--required">
+        <label class="new-course__label">
+            <span>Description:</span>
+            <textarea [formControlName]="'description'" type="text" placeholder="" class="new-course__input new-course__input--description"></textarea>
+        </label>
+    </div>
+    <div class="new-course__form-control new-course__form-control--required">
+        <label class="new-course__label">
+            <span>Duration:</span>
+            <gmp-vc-duration-input [formControlName]="'duration'"></gmp-vc-duration-input>
+        </label>
+    </div>
+    <div class="new-course__form-control new-course__form-control--required">
+        <label class="new-course__label">
+            <span>Date:</span>
+            <gmp-vc-date-input [formControlName]="'date'"></gmp-vc-date-input>
+        </label>
+    </div>
+    <div class="new-course__form-control new-course__form-control--required">
+        <label class="new-course__label">
+            <span>Authors:</span>
+            <gmp-vc-authors-input [formControlName]="'authors'"></gmp-vc-authors-input>
+        </label>
+    </div>
+    <div class="new-course__buttons-panel">
+        <button type="button" class="new-course__button new-course__button--cancel">Cancel</button>
+        <button type="submit" class="new-course__button new-course__button--save" [disabled]="!form.valid">Save</button>
+    </div>
+</form>

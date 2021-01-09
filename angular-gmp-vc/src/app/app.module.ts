@@ -18,6 +18,10 @@ import { FilterCoursesPipe } from './pipes/filter.pipe';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { LoginModule } from './login/login.module';
+import { AddCourseComponent } from './components/add-course/add-course.component';
+import { DurationInputComponent } from './components/duration-input/duration-input.component';
+import { DateInputComponent } from './components/date-input/date-input.component';
+import { AuthorsInputComponent } from './components/authors-input/authors-input.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +39,10 @@ import { LoginModule } from './login/login.module';
         FilterCoursesPipe,
         ConfirmModalComponent,
         ModalComponent,
+        AddCourseComponent,
+        DurationInputComponent,
+        DateInputComponent,
+        AuthorsInputComponent,
     ],
     imports: [
         BrowserModule,
