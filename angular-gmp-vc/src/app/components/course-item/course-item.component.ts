@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, EventEmitter, Output, OnChanges  } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, OnChanges, ChangeDetectionStrategy  } from '@angular/core';
 import { ICourseItem } from 'src/app/models/course-item.models';
 
 @Component({
     selector: 'gmp-vc-course-item',
     templateUrl: './course-item.component.html',
     styleUrls: ['./course-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseItemComponent implements OnInit, OnChanges {
 

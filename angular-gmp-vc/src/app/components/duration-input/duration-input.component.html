@@ -1,0 +1,13 @@
+<div class="duration">
+    <input
+        type="number"
+        min="0"
+        placeholder=""
+        class="duration__input"
+        [ngModel]="value"
+        (ngModelChange)="updateValue($event)"
+    >
+    <span *ngIf="value">
+        {{ value | duration }}
+    </span>
+</div>
