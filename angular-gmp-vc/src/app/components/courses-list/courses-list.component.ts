@@ -4,6 +4,7 @@ import { ICourseItem } from 'src/app/models/course-item.models';
 import { FilterCoursesPipe } from 'src/app/pipes/filter.pipe';
 import { CoursesService } from 'src/app/services/courses.service';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'gmp-vc-courses-list',
@@ -20,6 +21,7 @@ export class CoursesListComponent implements OnInit, OnChanges {
         private filterPipe: FilterCoursesPipe,
         private coursesService: CoursesService,
         private modalService: ModalService,
+        private router: Router,
     ) {
         console.log('CoursesListComponent -> constructor');
     }
@@ -55,5 +57,9 @@ export class CoursesListComponent implements OnInit, OnChanges {
 
     public searchCourse(text: string): void {
         this.courseList = this.filterPipe.transform(this.allCourses, text);
+    }
+
+    public addCourse() {
+        this.router.navigate(['courses', 'new']);
     }
 }

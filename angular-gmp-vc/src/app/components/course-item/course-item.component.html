@@ -17,7 +17,10 @@
     </div>
     <div class="course-item__description">{{ courseItem.description }}</div>
     <div class="course-item__control-panel">
-        <button class="course-item__button course-item__button--edit">Edit</button>
+        <button
+            class="course-item__button course-item__button--edit"
+            (click)="editCourse()"
+        >Edit</button>
         <button
             class="course-item__button course-item__button--delete"
             (click)="deleteCourse()"

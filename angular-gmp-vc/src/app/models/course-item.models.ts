@@ -5,4 +5,5 @@ export interface ICourseItem {
     duration: number;
     description: string;
     topRated: boolean;
+    authors?: any[];
 }

@@ -7,14 +7,12 @@ import { AuthenticationService } from '@gmp-vc-services/authentication.service';
     styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-    public isAuthenticated = false;
 
     constructor(
-        private authService: AuthenticationService,
+        public authService: AuthenticationService,
     ) { }
 
     public ngOnInit(): void {
-        this.isAuthenticated = this.authService.isAuthenticated;
     }
 
     public logout(): void {
