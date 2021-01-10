@@ -13,4 +13,28 @@
     width: 100%;
     max-width: 1150px;
     padding: 0 20px;
+
+    &-list {
+
+        &__item {
+            display: inline-block;
+            margin-right: 5px;
+
+            &:not(:last-child):after {
+                content: "/";
+                color: #4bc0e3;
+                margin-left: 5px;
+            }
+        }
+
+        &__link {
+            text-decoration: none;
+            color: #868996;
+        }
+
+        &__current-link {
+            font-weight: bold;
+            cursor: default;
+        }
+    }
 }

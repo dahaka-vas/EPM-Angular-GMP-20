@@ -1,1 +1,18 @@
-<div class="breadcrumbs">Courses</div>
+<div class="breadcrumbs">
+    <ul class="breadcrumbs-list">
+        <li
+            *ngFor="let url of breadcrumbs; last as last"
+            class="breadcrumbs-list__item"
+        >
+            <a *ngIf="!last"
+                [routerLink]="url.routerLink"
+                class="breadcrumbs-list__link"
+            >{{ url.text }}</a>
+
+            <span
+                *ngIf="last"
+                class="breadcrumbs-list__current-link"
+            >{{ url.text }}</span>
+        </li>
+    </ul>
+</div>

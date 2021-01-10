@@ -6,7 +6,7 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 export class CoursePlateBorderDirective implements OnInit {
 
     // tslint:disable-next-line: no-input-rename
-    @Input('courseCreationDate') public date: Date = new Date(0);
+    @Input('courseCreationDate') public date: Date | string | number = new Date(0);
 
     constructor(private element: ElementRef) { }
 
@@ -14,6 +14,8 @@ export class CoursePlateBorderDirective implements OnInit {
         let itemClass = '';
         const now = new Date();
         const twoWeeksAgo = new Date(new Date().setDate(now.getDate() - 14));
+
+        this.date = new Date(this.date);
 
         if (this.date < now && this.date >= twoWeeksAgo) {
             itemClass = 'new-item';

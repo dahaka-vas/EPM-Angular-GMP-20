@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '@gmp-vc-services/authentication.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class LoginComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private authService: AuthenticationService,
+        private router: Router,
     ) { }
 
     ngOnInit(): void {
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit {
         } else {
             console.log('logged in failed');
         }
+        this.router.navigate(['/courses']);
     }
 
 }

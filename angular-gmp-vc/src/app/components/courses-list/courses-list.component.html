@@ -1,6 +1,6 @@
 <div class="course-list">
     <gmp-vc-search (search)="searchCourse($event)"></gmp-vc-search>
-    <button class="course-list__button course-list__button--add-course">Add course</button>
+    <button class="course-list__button course-list__button--add-course" (click)="addCourse()">Add course</button>
     <ng-container *ngIf="courseList.length">
         <gmp-vc-course-item
             *ngFor="let courseItem of courseList | orderBy:'creationDate':-1"
