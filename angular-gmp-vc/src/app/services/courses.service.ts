@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { COURSES } from '../mocks/courses-list.mock';
-import { ICourseItem } from '../models/course-item.models';
+import { ICourseItem } from '../models/course.models';
+import { ICoursesRequest } from '../models/http.models';
+import { HttpService } from './http.service';
 
 @Injectable({
     providedIn: 'root',
@@ -8,33 +11,35 @@ import { ICourseItem } from '../models/course-item.models';
 export class CoursesService {
     private courses = COURSES;
 
-    constructor() { }
+    constructor(
+        private httpService: HttpService,
+    ) { }
 
-    public getList(): ICourseItem[] {
-        return this.courses;
+    public getList(params?: ICoursesRequest): Observable<ICourseItem[]> {
+        const defaultParams: ICoursesRequest = { start: 0, count: 5, sort: 'date' };
+        Object.assign(defaultParams, params);
+        params = JSON.parse(JSON.stringify(defaultParams));
+        return this.httpService.getCourses(params);
     }
 
-    public createCourse(course: ICourseItem): void {
+    public createCourse(course: ICourseItem): Observable<ICourseItem> {
+        const id = Date.now() + Math.ceil(Math.random() * 10);
         course = {
             ...course,
-            id: this.courses.length + 1,
+            id,
         }
-        this.courses.push(course);
+        return this.httpService.createCourse(course);
     }
 
-    public getCourse(id: number): ICourseItem | undefined {
-        return this.courses.find(course => course.id === id);
+    public getCourse(id: number): Observable<ICourseItem> {
+        return this.httpService.getCourseById(id);
     }
 
-    public updateCourse(updatedCourse: ICourseItem): void {
-        const index = this.courses.findIndex(course => course.id === updatedCourse.id);
-        if (index !== -1) {
-            this.courses[index] = updatedCourse;
-        }
+    public updateCourse(updatedCourse: ICourseItem): Observable<ICourseItem> {
+        return this.httpService.updateCourse(updatedCourse);
     }
 
-    public removeCourse(id: number): ICourseItem[] {
-        this.courses = this.courses.filter(course => course.id !== id);
-        return this.courses;
+    public removeCourse(id: number): Observable<void> {
+        return this.httpService.deleteCourse(id);
     }
 }

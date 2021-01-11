@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ICourseItem } from '../models/course-item.models';
+import { ICourseItem } from '../models/course.models';
 
 @Pipe({
     name: 'filterCourses',
@@ -9,7 +9,7 @@ export class FilterCoursesPipe implements PipeTransform {
     transform(courses: ICourseItem[], searchText = ''): ICourseItem[] {
         return courses.filter(course => {
             return [
-                course.title,
+                course.name,
                 course.description,
             ].some((fieldValue: string) => {
                 fieldValue = fieldValue.toString();

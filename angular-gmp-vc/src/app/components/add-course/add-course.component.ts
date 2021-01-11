@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '@gmp-vc-services/courses.service';
-import { ICourseItem } from 'src/app/models/course-item.models';
+import { of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { ICourseItem } from 'src/app/models/course.models';
 
 @Component({
     selector: 'gmp-vc-add-course',
@@ -11,7 +13,7 @@ import { ICourseItem } from 'src/app/models/course-item.models';
 })
 export class AddCourseComponent implements OnInit {
     public form!: FormGroup;
-    public course!: ICourseItem | undefined;
+    public course!: ICourseItem | null;
 
     constructor(
         private fb: FormBuilder,
@@ -21,22 +23,25 @@ export class AddCourseComponent implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-        this.route.params.subscribe(routeParams => {
-            this.course =  this.coursesService.getCourse(Number(routeParams.id));
-
-            const course = this.course || {} as ICourseItem;
-            if (!this.course) {
-                this.router.navigate(['courses', 'new']);
-            }
-            this.form = this.fb.group({
-                title: [course.title, Validators.required],
-                description: [course.description, Validators.required],
-                duration: [course.duration, Validators.required],
-                creationDate: [course.creationDate, Validators.required],
-                authors: [course.authors, Validators.required],
+        // TODO: find out how to refactor this
+        this.route.params
+            .pipe(
+                switchMap(routeParams => this.coursesService.getCourse(Number(routeParams.id))),
+                catchError(() => of(null)),
+            ).subscribe(course => {
+                this.course = course;
+                course = this.course || {} as ICourseItem;
+                if (!this.course) {
+                    this.router.navigate(['courses', 'new']);
+                }
+                this.form = this.fb.group({
+                    name: [course.name, Validators.required],
+                    description: [course.description, Validators.required],
+                    length: [course.length, Validators.required],
+                    date: [course.date, Validators.required],
+                    authors: [course.authors, Validators.required],
+                });
             });
-        })
-
     }
 
     public cancel(): void {
@@ -45,14 +50,12 @@ export class AddCourseComponent implements OnInit {
 
     public saveCourse(): void {
         const course = this.form.value;
-        if (!this.course) {
-            this.coursesService.createCourse(course);
-        } else {
-            this.coursesService.updateCourse({
+        const saveCourse$ = !this.course
+            ? this.coursesService.createCourse(course)
+            : this.coursesService.updateCourse({
                 ...this.course,
                 ...course,
-            })
-        }
-        this.router.navigate(['courses']);
+            });
+        saveCourse$.subscribe(() => this.router.navigate(['courses']));
     }
 }

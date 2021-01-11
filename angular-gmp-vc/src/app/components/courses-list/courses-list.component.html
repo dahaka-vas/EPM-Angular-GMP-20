@@ -3,7 +3,7 @@
     <button class="course-list__button course-list__button--add-course" (click)="addCourse()">Add course</button>
     <ng-container *ngIf="courseList.length">
         <gmp-vc-course-item
-            *ngFor="let courseItem of courseList | orderBy:'creationDate':-1"
+            *ngFor="let courseItem of courseList"
             [courseItem]="courseItem"
             (deleteCourseByID)="deleteCourse($event)"
         ></gmp-vc-course-item>
