@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@gmp-vc-services/authentication.service';
+import { of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { IAuthorizationResponse } from 'src/app/models/http.models';
 
 @Component({
     selector: 'gmp-vc-login',
@@ -19,19 +22,25 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            email: [null, [Validators.required, Validators.email]],
+            email: [null, Validators.required],
             password: [null, Validators.required],
         });
     }
 
+    // TODO: Wrong e-mail or password
     public login(): void {
-        this.authService.login(this.form.value.email, this.form.value.password);
-        if (this.authService.isAuthenticated) {
-            console.log('logged in successfully');
-        } else {
-            console.log('logged in failed');
-        }
-        this.router.navigate(['/courses']);
+        this.authService.login(this.form.value.email, this.form.value.password)
+            .pipe(
+                tap((response: IAuthorizationResponse) => {
+                    console.log('logged in successfully');
+                    this.router.navigate(['/courses']);
+                }),
+                catchError((error: any) => {
+                    console.log('logged in failed')
+                    // console.error(error);
+                    return of(error);
+                }),
+            )
+            .subscribe();
     }
-
 }

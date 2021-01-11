@@ -1,6 +1,6 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { ModalService } from 'src/app/services/modal.service';
-import { ICourseItem } from 'src/app/models/course-item.models';
+import { ICourseItem } from 'src/app/models/course.models';
 import { FilterCoursesPipe } from 'src/app/pipes/filter.pipe';
 import { CoursesService } from 'src/app/services/courses.service';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
@@ -15,7 +15,9 @@ import { Router } from '@angular/router';
 export class CoursesListComponent implements OnInit, OnChanges {
 
     public courseList: ICourseItem[] = [];
-    public allCourses: ICourseItem[] = [];
+
+    // TODO: Implement params for courses loading
+    // private courseListParams: ICoursesRequest = {};
 
     constructor(
         private filterPipe: FilterCoursesPipe,
@@ -32,12 +34,16 @@ export class CoursesListComponent implements OnInit, OnChanges {
 
     public ngOnInit(): void {
         console.log('CoursesListComponent -> ngOnInit');
-        this.allCourses = this.coursesService.getList();
-        this.courseList = this.allCourses;
+        this.coursesService.getList().subscribe((courses: ICourseItem[]) => {
+            this.courseList = courses;
+        })
     }
 
     public loadCourses(): void {
         console.log('Load more courses');
+        this.coursesService.getList({ start: this.courseList.length }).subscribe((courses: ICourseItem[]) => {
+            this.courseList.push(...courses);
+        })
     }
 
     public deleteCourse(id: number): void {
@@ -50,13 +56,16 @@ export class CoursesListComponent implements OnInit, OnChanges {
         const modalRef = this.modalService.open(ConfirmModalComponent, {course: ` (with id: ${id})`});
         modalRef.result.subscribe((result) => {
             console.log('result = ' + result);
-            this.allCourses = this.coursesService.removeCourse(id);
-            this.courseList = this.allCourses;
+            this.coursesService.removeCourse(id).subscribe(() => {
+                this.courseList = this.courseList.filter(course => course.id !== id);
+            });
         });
     }
 
     public searchCourse(text: string): void {
-        this.courseList = this.filterPipe.transform(this.allCourses, text);
+        this.coursesService.getList({ textFragment: text, count: 30 }).subscribe((courses: ICourseItem[]) => {
+            this.courseList = courses;
+        })
     }
 
     public addCourse() {

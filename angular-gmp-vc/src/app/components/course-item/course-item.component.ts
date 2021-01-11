@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, EventEmitter, Output, OnChanges, ChangeDetectionStrategy  } from '@angular/core';
 import { Router } from '@angular/router';
-import { ICourseItem } from 'src/app/models/course-item.models';
+import { ICourseItem } from 'src/app/models/course.models';
 
 @Component({
     selector: 'gmp-vc-course-item',

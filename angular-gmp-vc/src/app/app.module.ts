@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,7 +12,6 @@ import { SearchComponent } from './components/search/search.component';
 import { CoursesListComponent } from './components/courses-list/courses-list.component';
 import { CourseItemComponent } from './components/course-item/course-item.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoursePlateBorderDirective } from './directives/course-plate-border.directive';
 import { DurationPipe } from './pipes/duration.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
@@ -23,6 +24,7 @@ import { DurationInputComponent } from './components/duration-input/duration-inp
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { AuthorsInputComponent } from './components/authors-input/authors-input.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { TokenInterceptor } from './interceptors/authentication.interceptor';
 
 @NgModule({
     declarations: [
@@ -47,13 +49,20 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
         NotFoundPageComponent,
     ],
     imports: [
-        BrowserModule,
         AppRoutingModule,
+        BrowserModule,
         FormsModule,
-        ReactiveFormsModule,
+        HttpClientModule,
         LoginModule,
+        ReactiveFormsModule,
     ],
-    providers: [],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true,
+        }
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -1,4 +1,5 @@
 <form
+    *ngIf="form"
     class="new-course"
     [formGroup]="form"
     (submit)="saveCourse()"
@@ -7,7 +8,7 @@
     <div class="new-course__form-control new-course__form-control--required">
         <label class="new-course__label">
             <span>Title:</span>
-            <input [formControlName]="'title'" type="text" placeholder="" class="new-course__input new-course__input--title">
+            <input [formControlName]="'name'" type="text" placeholder="" class="new-course__input new-course__input--title">
         </label>
     </div>
     <div class="new-course__form-control new-course__form-control--required">
@@ -19,13 +20,13 @@
     <div class="new-course__form-control new-course__form-control--required">
         <label class="new-course__label">
             <span>Duration:</span>
-            <gmp-vc-duration-input [formControlName]="'duration'"></gmp-vc-duration-input>
+            <gmp-vc-duration-input [formControlName]="'length'"></gmp-vc-duration-input>
         </label>
     </div>
     <div class="new-course__form-control new-course__form-control--required">
         <label class="new-course__label">
             <span>Date:</span>
-            <gmp-vc-date-input [formControlName]="'creationDate'"></gmp-vc-date-input>
+            <gmp-vc-date-input [formControlName]="'date'"></gmp-vc-date-input>
         </label>
     </div>
     <div class="new-course__form-control new-course__form-control--required">

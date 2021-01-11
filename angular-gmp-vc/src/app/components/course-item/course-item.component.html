@@ -3,17 +3,17 @@
     [ngClass]="{
         'top-rated-item-background': courseItem.topRated
     }"
-    [courseCreationDate]="courseItem.creationDate"
+    [courseCreationDate]="courseItem.date"
 >
     <div
         class="course-item__name"
         [ngClass]="{
             'course-item__name--top-rated': courseItem.topRated
         }"
-    >{{ courseItem.title | uppercase }}</div>
+    >{{ courseItem.name | uppercase }}</div>
     <div class="course-item__details-panel">
-        <span class="course-item__details course-item__details--duration">{{ courseItem.duration | duration }}</span>
-        <span class="course-item__details course-item__details--date">{{ courseItem.creationDate | date:'M/d/yyyy' }}</span>
+        <span class="course-item__details course-item__details--duration">{{ courseItem.length | duration }}</span>
+        <span class="course-item__details course-item__details--date">{{ courseItem.date | date:'M/d/yyyy' }}</span>
     </div>
     <div class="course-item__description">{{ courseItem.description }}</div>
     <div class="course-item__control-panel">
