@@ -3,10 +3,10 @@
         class="search-course__input"
         placeholder="Type to search"
         [(ngModel)]="searchText"
-        (keyup.enter)="findCourse()"
+        (ngModelChange)="findCourse()"
     >
-    <button
+    <!-- <button
         class="search-course__button"
         (click)="findCourse()"
-    >Search</button>
+    >Search</button> -->
 </div>

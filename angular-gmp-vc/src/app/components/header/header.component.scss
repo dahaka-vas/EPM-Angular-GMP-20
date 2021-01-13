@@ -19,8 +19,17 @@
         border: none;
         background-color: inherit;
         color: $white;
+        position: relative;
+
         &:not(:first-child) {
             margin-left: 24px;
+        }
+
+        img {
+            width: 16px;
+            margin-right: 3px;
+            top: 3px;
+            position: relative;
         }
     }
 }

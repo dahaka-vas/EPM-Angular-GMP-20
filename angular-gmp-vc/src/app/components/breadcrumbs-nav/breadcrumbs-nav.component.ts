@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd  } from '@angular/router';
+import { Router, NavigationEnd  } from '@angular/router';
+import { Subject } from 'rxjs';
 import {
     filter,
+    takeUntil,
     startWith,
 } from 'rxjs/operators';
 
@@ -18,9 +20,9 @@ const breadcrumbsMap = {
 export class BreadcrumbsNavComponent implements OnInit {
 
     public breadcrumbs: any[] = [];
+    private componentDestroyed$ = new Subject<void>();
 
     constructor(
-        private route: ActivatedRoute,
         private router: Router,
     ) { }
 
@@ -28,6 +30,7 @@ export class BreadcrumbsNavComponent implements OnInit {
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             startWith(null),
+            takeUntil(this.componentDestroyed$),
         ).subscribe(event => {
             this.breadcrumbs = this.router.url.split('/').filter(url => url).reduce((breadcrumbs: any[], url: string) => {
                 const link = breadcrumbs.reduce((allUrls, currentUrl) => [...allUrls, currentUrl.url], []);
@@ -35,7 +38,7 @@ export class BreadcrumbsNavComponent implements OnInit {
 
                 const newUrl = {
                     routerLink: link.join('/'),
-                    text: breadcrumbsMap[url] || 'Edit Course',
+                    text: (breadcrumbsMap as any)[url] || 'Edit Course',
                     url,
                 };
 
@@ -45,6 +48,10 @@ export class BreadcrumbsNavComponent implements OnInit {
                 ];
             }, []);
         });
+    }
 
+    public ngOnDestroy(): void {
+        this.componentDestroyed$.next();
+        this.componentDestroyed$.complete();
     }
 }

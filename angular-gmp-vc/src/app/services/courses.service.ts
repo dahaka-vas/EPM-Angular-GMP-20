@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { COURSES } from '../mocks/courses-list.mock';
 import { ICourseItem } from '../models/course.models';
 import { ICoursesRequest } from '../models/http.models';
@@ -11,15 +12,33 @@ import { HttpService } from './http.service';
 export class CoursesService {
     private courses = COURSES;
 
+    private courseListParams: ICoursesRequest = {
+        start: 0,
+        count: 5,
+        sort: 'date'
+    };
+
+    public coursesTotalCount = 0;
+
     constructor(
         private httpService: HttpService,
     ) { }
 
     public getList(params?: ICoursesRequest): Observable<ICourseItem[]> {
-        const defaultParams: ICoursesRequest = { start: 0, count: 5, sort: 'date' };
-        Object.assign(defaultParams, params);
-        params = JSON.parse(JSON.stringify(defaultParams));
-        return this.httpService.getCourses(params);
+        Object.assign(this.courseListParams, params);
+
+        if (!this.courseListParams.textFragment) {
+            delete this.courseListParams.textFragment;
+            this.courseListParams.count = 5;
+        } else {
+            this.courseListParams.start = 0;
+            this.courseListParams.count = 30;
+        }
+
+        return this.httpService.getCourses(this.courseListParams)
+            .pipe(
+                tap(courses => this.coursesTotalCount = this.courseListParams.textFragment ? courses.length : 30),
+            );
     }
 
     public createCourse(course: ICourseItem): Observable<ICourseItem> {

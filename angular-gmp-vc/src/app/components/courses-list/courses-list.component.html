@@ -8,6 +8,7 @@
             (deleteCourseByID)="deleteCourse($event)"
         ></gmp-vc-course-item>
         <button
+            *ngIf="courseList.length < coursesService.coursesTotalCount"
             class="course-list__button course-list__button--load-more"
             (click)="loadCourses()"
         >Load more</button>
