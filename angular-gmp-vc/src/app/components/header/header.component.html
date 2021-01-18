@@ -1,10 +1,15 @@
 <header class="header">
     <span>logo</span>
 
-    <span *ngIf="authService.isAuthenticated">
-        <button class="header__login-button">User login</button>
-        <button class="header__login-button" (click)="logout()">Log out</button>
+    <span *ngIf="user">
+        <button class="header__login-button">
+            <img src="../../../assets/icons/person.svg">
+            {{ user.login }}</button>
+        <button class="header__login-button" (click)="logout()">
+            <img src="../../../assets/icons/log-out.svg">
+            Log out
+        </button>
     </span>
 </header>
 
-<gmp-vc-breadcrumbs-nav *ngIf="authService.isAuthenticated"></gmp-vc-breadcrumbs-nav>
+<gmp-vc-breadcrumbs-nav *ngIf="user"></gmp-vc-breadcrumbs-nav>

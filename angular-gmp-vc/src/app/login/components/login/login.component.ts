@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@gmp-vc-services/authentication.service';
-import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { catchError, takeUntil, tap } from 'rxjs/operators';
 import { IAuthorizationResponse } from 'src/app/models/http.models';
 
 @Component({
@@ -14,17 +14,24 @@ import { IAuthorizationResponse } from 'src/app/models/http.models';
 export class LoginComponent implements OnInit {
     public form!: FormGroup;
 
+    private componentDestroyed$ = new Subject<void>();
+
     constructor(
         private fb: FormBuilder,
         private authService: AuthenticationService,
         private router: Router,
     ) { }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.form = this.fb.group({
             email: [null, Validators.required],
             password: [null, Validators.required],
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.componentDestroyed$.next();
+        this.componentDestroyed$.complete();
     }
 
     // TODO: Wrong e-mail or password
@@ -40,6 +47,7 @@ export class LoginComponent implements OnInit {
                     // console.error(error);
                     return of(error);
                 }),
+                takeUntil(this.componentDestroyed$),
             )
             .subscribe();
     }

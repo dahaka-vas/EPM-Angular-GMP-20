@@ -25,6 +25,7 @@ import { DateInputComponent } from './components/date-input/date-input.component
 import { AuthorsInputComponent } from './components/authors-input/authors-input.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { TokenInterceptor } from './interceptors/authentication.interceptor';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { TokenInterceptor } from './interceptors/authentication.interceptor';
         DateInputComponent,
         AuthorsInputComponent,
         NotFoundPageComponent,
+        LoadingComponent,
     ],
     imports: [
         AppRoutingModule,

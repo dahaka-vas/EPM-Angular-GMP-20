@@ -5,6 +5,8 @@ import { FilterCoursesPipe } from 'src/app/pipes/filter.pipe';
 import { CoursesService } from 'src/app/services/courses.service';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'gmp-vc-courses-list',
@@ -15,13 +17,11 @@ import { Router } from '@angular/router';
 export class CoursesListComponent implements OnInit, OnChanges {
 
     public courseList: ICourseItem[] = [];
-
-    // TODO: Implement params for courses loading
-    // private courseListParams: ICoursesRequest = {};
+    private componentDestroyed$ = new Subject<void>();
 
     constructor(
         private filterPipe: FilterCoursesPipe,
-        private coursesService: CoursesService,
+        public coursesService: CoursesService,
         private modalService: ModalService,
         private router: Router,
     ) {
@@ -34,16 +34,25 @@ export class CoursesListComponent implements OnInit, OnChanges {
 
     public ngOnInit(): void {
         console.log('CoursesListComponent -> ngOnInit');
-        this.coursesService.getList().subscribe((courses: ICourseItem[]) => {
-            this.courseList = courses;
-        })
+        this.coursesService.getList()
+            .pipe(takeUntil(this.componentDestroyed$))
+            .subscribe((courses: ICourseItem[]) => {
+                this.courseList = courses;
+            })
+    }
+
+    public ngOnDestroy(): void {
+        this.componentDestroyed$.next();
+        this.componentDestroyed$.complete();
     }
 
     public loadCourses(): void {
         console.log('Load more courses');
-        this.coursesService.getList({ start: this.courseList.length }).subscribe((courses: ICourseItem[]) => {
-            this.courseList.push(...courses);
-        })
+        this.coursesService.getList({ start: this.courseList.length })
+            .pipe(takeUntil(this.componentDestroyed$))
+            .subscribe((courses: ICourseItem[]) => {
+                this.courseList.push(...courses);
+            })
     }
 
     public deleteCourse(id: number): void {
@@ -54,18 +63,27 @@ export class CoursesListComponent implements OnInit, OnChanges {
         // }
 
         const modalRef = this.modalService.open(ConfirmModalComponent, {course: ` (with id: ${id})`});
-        modalRef.result.subscribe((result) => {
-            console.log('result = ' + result);
-            this.coursesService.removeCourse(id).subscribe(() => {
-                this.courseList = this.courseList.filter(course => course.id !== id);
+        modalRef.result
+            .pipe(
+                switchMap(result => {
+                    console.log('result = ' + result);
+                    return this.coursesService.removeCourse(id)
+                }),
+                switchMap(() => this.coursesService.getList()),
+                takeUntil(this.componentDestroyed$)
+            ).subscribe((courses: ICourseItem[]) => {
+                    this.courseList = courses;
             });
-        });
     }
 
-    public searchCourse(text: string): void {
-        this.coursesService.getList({ textFragment: text, count: 30 }).subscribe((courses: ICourseItem[]) => {
-            this.courseList = courses;
-        })
+    public searchCourse(searchStream$: Observable<string>): void {
+        searchStream$
+            .pipe(
+                switchMap((textFragment: string) => this.coursesService.getList({ textFragment })),
+                takeUntil(this.componentDestroyed$),
+            ).subscribe((courses: ICourseItem[]) => {
+                this.courseList = courses;
+            });
     }
 
     public addCourse() {

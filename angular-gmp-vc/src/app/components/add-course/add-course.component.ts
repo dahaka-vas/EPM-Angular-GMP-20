@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '@gmp-vc-services/courses.service';
-import { of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { ICourseItem } from 'src/app/models/course.models';
 
 @Component({
@@ -14,6 +14,8 @@ import { ICourseItem } from 'src/app/models/course.models';
 export class AddCourseComponent implements OnInit {
     public form!: FormGroup;
     public course!: ICourseItem | null;
+
+    private componentDestroyed$ = new Subject<void>();
 
     constructor(
         private fb: FormBuilder,
@@ -28,6 +30,7 @@ export class AddCourseComponent implements OnInit {
             .pipe(
                 switchMap(routeParams => this.coursesService.getCourse(Number(routeParams.id))),
                 catchError(() => of(null)),
+                takeUntil(this.componentDestroyed$),
             ).subscribe(course => {
                 this.course = course;
                 course = this.course || {} as ICourseItem;
@@ -44,6 +47,11 @@ export class AddCourseComponent implements OnInit {
             });
     }
 
+    public ngOnDestroy(): void {
+        this.componentDestroyed$.next();
+        this.componentDestroyed$.complete();
+    }
+
     public cancel(): void {
         this.router.navigate(['courses']);
     }
@@ -56,6 +64,8 @@ export class AddCourseComponent implements OnInit {
                 ...this.course,
                 ...course,
             });
-        saveCourse$.subscribe(() => this.router.navigate(['courses']));
+        saveCourse$.pipe(
+            takeUntil(this.componentDestroyed$),
+        ).subscribe(() => this.router.navigate(['courses']));
     }
 }
