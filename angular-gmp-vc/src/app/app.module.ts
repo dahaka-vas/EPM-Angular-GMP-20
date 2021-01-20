@@ -26,6 +26,11 @@ import { AuthorsInputComponent } from './components/authors-input/authors-input.
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { TokenInterceptor } from './interceptors/authentication.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
+import { StoreModule } from '@ngrx/store';
+import { userReduser } from './+store/auth/user.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from './+store/auth/user.effects';
 
 @NgModule({
     declarations: [
@@ -57,6 +62,11 @@ import { LoadingComponent } from './components/loading/loading.component';
         HttpClientModule,
         LoginModule,
         ReactiveFormsModule,
+        StoreModule.forRoot({
+            user: userReduser,
+        }),
+        EffectsModule.forRoot([UserEffects]),
+        StoreDevtoolsModule.instrument({name: 'ddfdfdf', maxAge: 25, logOnly: false})
     ],
     providers: [
         {
