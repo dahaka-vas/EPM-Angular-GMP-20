@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '@gmp-vc-services/authentication.service';
+import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { logout } from 'src/app/+store/auth/user.actions';
 import { ICurrentUser } from 'src/app/models/user.models';
 
 @Component({
@@ -15,16 +16,17 @@ export class HeaderComponent implements OnInit {
     public user!: ICurrentUser;
 
     constructor(
-        public authService: AuthenticationService,
+        private store: Store<{
+            user: { user: ICurrentUser }
+        }>,
     ) { }
 
     public ngOnInit(): void {
-        this.authService.currentUser$
-            .pipe(
-                tap(v => this.user = v),
-                takeUntil(this.componentDestroyed$),
-            )
-            .subscribe();
+        this.store.pipe(
+            select('user'),
+            tap(({ user }: { user: ICurrentUser }) => this.user = user),
+            takeUntil(this.componentDestroyed$),
+        ).subscribe()
     }
 
     public ngOnDestroy(): void {
@@ -33,7 +35,6 @@ export class HeaderComponent implements OnInit {
     }
 
     public logout(): void {
-        this.authService.logout();
-        console.log('Logout');
+        this.store.dispatch(logout());
     }
 }

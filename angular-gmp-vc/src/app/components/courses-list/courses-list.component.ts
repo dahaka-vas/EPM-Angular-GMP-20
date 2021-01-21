@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalService } from 'src/app/services/modal.service';
 import { ICourseItem } from 'src/app/models/course.models';
 import { FilterCoursesPipe } from 'src/app/pipes/filter.pipe';
@@ -6,7 +6,10 @@ import { CoursesService } from 'src/app/services/courses.service';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { GetCoursesList, RemoveCourse } from 'src/app/+store/courses/courses.actions';
+import { ICoursesRequest } from 'src/app/models/http.models';
 
 @Component({
     selector: 'gmp-vc-courses-list',
@@ -14,31 +17,36 @@ import { switchMap, takeUntil } from 'rxjs/operators';
     styleUrls: ['./courses-list.component.scss'],
     providers: [FilterCoursesPipe],
 })
-export class CoursesListComponent implements OnInit, OnChanges {
-
+export class CoursesListComponent implements OnInit {
     public courseList: ICourseItem[] = [];
+    public coursesTotalCount = 0;
+
     private componentDestroyed$ = new Subject<void>();
 
     constructor(
-        private filterPipe: FilterCoursesPipe,
-        public coursesService: CoursesService,
         private modalService: ModalService,
         private router: Router,
-    ) {
-        console.log('CoursesListComponent -> constructor');
-    }
-
-    public ngOnChanges(): void {
-        console.log('CoursesListComponent -> ngOnChanges');
-    }
+        private store: Store<{
+            courses: {
+                courses: ICourseItem[],
+                totalElements: number,
+            }
+        }>,
+    ) { }
 
     public ngOnInit(): void {
-        console.log('CoursesListComponent -> ngOnInit');
-        this.coursesService.getList()
-            .pipe(takeUntil(this.componentDestroyed$))
-            .subscribe((courses: ICourseItem[]) => {
-                this.courseList = courses;
-            })
+        const params: ICoursesRequest = {
+            start: 0
+        };
+        this.store.dispatch(GetCoursesList({ params }));
+        this.store.pipe(
+            select('courses'),
+            tap(v => console.log('v', v)),
+            takeUntil(this.componentDestroyed$),
+        ).subscribe(({ courses, totalElements }: { courses: ICourseItem[], totalElements: number }) => {
+            this.coursesTotalCount = totalElements;
+            this.courseList.push(...courses);
+        });
     }
 
     public ngOnDestroy(): void {
@@ -47,42 +55,30 @@ export class CoursesListComponent implements OnInit, OnChanges {
     }
 
     public loadCourses(): void {
-        console.log('Load more courses');
-        this.coursesService.getList({ start: this.courseList.length })
-            .pipe(takeUntil(this.componentDestroyed$))
-            .subscribe((courses: ICourseItem[]) => {
-                this.courseList.push(...courses);
-            })
+        const params: ICoursesRequest = {
+            start: this.courseList.length
+        };
+        this.store.dispatch(GetCoursesList({ params }));
     }
 
     public deleteCourse(id: number): void {
-        console.log(`Delete course with id: ${id}`);
-        // if (confirm('Do you really want to delete this course?')) {
-        //     this.allCourses = this.coursesService.removeCourse(id);
-        //     this.courseList = this.allCourses;
-        // }
-
         const modalRef = this.modalService.open(ConfirmModalComponent, {course: ` (with id: ${id})`});
         modalRef.result
             .pipe(
-                switchMap(result => {
-                    console.log('result = ' + result);
-                    return this.coursesService.removeCourse(id)
-                }),
-                switchMap(() => this.coursesService.getList()),
                 takeUntil(this.componentDestroyed$)
-            ).subscribe((courses: ICourseItem[]) => {
-                    this.courseList = courses;
+            ).subscribe(() => {
+                this.store.dispatch(RemoveCourse({ id }));
+                this.courseList = [];
             });
     }
 
     public searchCourse(searchStream$: Observable<string>): void {
         searchStream$
             .pipe(
-                switchMap((textFragment: string) => this.coursesService.getList({ textFragment })),
                 takeUntil(this.componentDestroyed$),
-            ).subscribe((courses: ICourseItem[]) => {
-                this.courseList = courses;
+            ).subscribe((textFragment: string) => {
+                this.store.dispatch(GetCoursesList({ params: { textFragment } }));
+                this.courseList = [];
             });
     }
 

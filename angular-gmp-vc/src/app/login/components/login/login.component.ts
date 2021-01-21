@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '@gmp-vc-services/authentication.service';
-import { of, Subject } from 'rxjs';
-import { catchError, takeUntil, tap } from 'rxjs/operators';
-import { IAuthorizationResponse } from 'src/app/models/http.models';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { login } from 'src/app/+store/auth/user.actions';
+import { ICurrentUser } from 'src/app/models/user.models';
 
 @Component({
     selector: 'gmp-vc-login',
@@ -18,8 +17,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthenticationService,
-        private router: Router,
+        private store: Store,
     ) { }
 
     public ngOnInit(): void {
@@ -36,19 +34,7 @@ export class LoginComponent implements OnInit {
 
     // TODO: Wrong e-mail or password
     public login(): void {
-        this.authService.login(this.form.value.email, this.form.value.password)
-            .pipe(
-                tap((response: IAuthorizationResponse) => {
-                    console.log('logged in successfully');
-                    this.router.navigate(['/courses']);
-                }),
-                catchError((error: any) => {
-                    console.log('logged in failed')
-                    // console.error(error);
-                    return of(error);
-                }),
-                takeUntil(this.componentDestroyed$),
-            )
-            .subscribe();
+        const { email, password } = this.form.value;
+        this.store.dispatch(login({ username: email, password: password }));
     }
 }

@@ -11,7 +11,7 @@ export class TokenInterceptor implements HttpInterceptor {
     ) { }
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token = JSON.parse(this.authService.getUserInfo() || '{}').token;
+        const token = JSON.parse(localStorage.getItem('user') || '{}').token;
         const requestUpdate = request.url.includes('/auth/login')
             ? {}
             : {
