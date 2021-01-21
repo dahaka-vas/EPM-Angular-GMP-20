@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '@gmp-vc-services/courses.service';
+import { select, Store } from '@ngrx/store';
 import { of, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
+import { AddCourse, GetCourse, NewCourse, UpdateCourse } from 'src/app/+store/courses/courses.actions';
 import { ICourseItem } from 'src/app/models/course.models';
 
 @Component({
@@ -21,22 +23,23 @@ export class AddCourseComponent implements OnInit {
         private fb: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private coursesService: CoursesService,
+        private store: Store<{
+            course: { course: ICourseItem }
+        }>,
     ) { }
 
     public ngOnInit(): void {
-        // TODO: find out how to refactor this
         this.route.params
             .pipe(
-                switchMap(routeParams => this.coursesService.getCourse(Number(routeParams.id))),
-                catchError(() => of(null)),
+                switchMap(routeParams => {
+                    const id = routeParams.id;
+                    this.store.dispatch(GetCourse({ id }));
+                    return this.store.pipe(select('course'));
+                }),
                 takeUntil(this.componentDestroyed$),
-            ).subscribe(course => {
+            ).subscribe(({ course }) => {
                 this.course = course;
                 course = this.course || {} as ICourseItem;
-                if (!this.course) {
-                    this.router.navigate(['courses', 'new']);
-                }
                 this.form = this.fb.group({
                     name: [course.name, Validators.required],
                     description: [course.description, Validators.required],
@@ -58,14 +61,15 @@ export class AddCourseComponent implements OnInit {
 
     public saveCourse(): void {
         const course = this.form.value;
-        const saveCourse$ = !this.course
-            ? this.coursesService.createCourse(course)
-            : this.coursesService.updateCourse({
-                ...this.course,
-                ...course,
-            });
-        saveCourse$.pipe(
-            takeUntil(this.componentDestroyed$),
-        ).subscribe(() => this.router.navigate(['courses']));
+        if (this.course && !this.course.id) {
+            this.store.dispatch(AddCourse({ course }));
+        } else {
+            this.store.dispatch(UpdateCourse({
+                updatedCourse: {
+                    ...this.course,
+                    ...course,
+                }
+            }));
+        }
     }
 }

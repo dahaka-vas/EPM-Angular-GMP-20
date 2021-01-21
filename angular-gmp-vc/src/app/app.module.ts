@@ -31,6 +31,8 @@ import { userReduser } from './+store/auth/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './+store/auth/user.effects';
+import { courseReduser, coursesReduser } from './+store/courses/courses.reducer';
+import { CoursesEffects } from './+store/courses/courses.effects';
 
 @NgModule({
     declarations: [
@@ -64,8 +66,10 @@ import { UserEffects } from './+store/auth/user.effects';
         ReactiveFormsModule,
         StoreModule.forRoot({
             user: userReduser,
+            courses: coursesReduser,
+            course: courseReduser,
         }),
-        EffectsModule.forRoot([UserEffects]),
+        EffectsModule.forRoot([UserEffects, CoursesEffects]),
         StoreDevtoolsModule.instrument({name: 'ddfdfdf', maxAge: 25, logOnly: false})
     ],
     providers: [
