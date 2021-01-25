@@ -1,9 +1,36 @@
 <div class="authors">
-    <input
-        type="text"
-        placeholder=""
-        class="authors__input"
-        [ngModel]="value"
-        (ngModelChange)="updateValue($event)"
-    >
+    <div class="authors__authors">
+        <div class="authors__input-wrapper">
+            <div class="authors__wrapper" #input (click)="openList(input)">
+                <div *ngIf="!value?.length" class="placeholder">Select author</div>
+                <div class="value-container">
+                    <div *ngFor="let val of value; let i=index" class="value-container__value">
+                        <span>{{ val.name || val }}</span>
+                        <span class="value-container__remove" (click)="removeAuthor($event, i)"></span>
+                    </div>
+                </div>
+                <div class="arrow-container">
+                    <div class="arrow" [ngClass]="{ open: isOpened }"></div>
+                </div>
+            </div>
+
+            <div class="multiselect__dropdown" *ngIf="isOpened" [style.height.px]="dropdownHeight">
+                <div class="authors__search">
+                    <gmp-vc-search
+                        [limitSearchTextLength]="1"
+                        (search)="searchText($event)"
+                    ></gmp-vc-search>
+                </div>
+                <hr>
+                <ul>
+                    <li
+                        *ngFor="let option of filteredAuthors"
+                        (click)="addItem(option)"
+                        [innerHTML]="option.name | highlight:textFragment"
+                        [ngClass]="{ disabled: option.disabled }"
+                    ></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

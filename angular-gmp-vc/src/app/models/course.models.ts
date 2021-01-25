@@ -1,6 +1,7 @@
-export interface IAuthors {
+export interface IAuthor {
     id: number;
     name: string;
+    disabled?: boolean;
 }
 
 export interface ICourseItem {
@@ -10,5 +11,5 @@ export interface ICourseItem {
     length: number;
     description: string;
     topRated: boolean;
-    authors?: IAuthors[];
+    authors?: IAuthor[];
 }

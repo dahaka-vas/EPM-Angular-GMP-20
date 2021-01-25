@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '@gmp-vc-services/courses.service';
 import { of, Subject } from 'rxjs';
@@ -38,11 +38,11 @@ export class AddCourseComponent implements OnInit {
                     this.router.navigate(['courses', 'new']);
                 }
                 this.form = this.fb.group({
-                    name: [course.name, Validators.required],
-                    description: [course.description, Validators.required],
-                    length: [course.length, Validators.required],
-                    date: [course.date, Validators.required],
-                    authors: [course.authors, Validators.required],
+                    name: [course.name, [Validators.required, Validators.maxLength(50)]],
+                    description: [course.description, [Validators.required, Validators.maxLength(500)]],
+                    length: [course.length, [Validators.required, Validators.pattern(/^\d+$/g)]],
+                    date: [this.getFormattedDate(course.date), [Validators.required, this.getDateValidator()]],
+                    authors: [course.authors, [this.getAuthorsValidator()]],
                 });
             });
     }
@@ -67,5 +67,32 @@ export class AddCourseComponent implements OnInit {
         saveCourse$.pipe(
             takeUntil(this.componentDestroyed$),
         ).subscribe(() => this.router.navigate(['courses']));
+    }
+
+    private getAuthorsValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            if (control.value.length) {
+                return null;
+            }
+            return { required: true };
+        }
+    }
+
+    private getDateValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const date = (control.value || '').toString();
+            const formatted = date.split('.').reverse();
+
+            if (Date.parse(formatted) !== Date.parse(formatted)) {
+                return {
+                    date: 'Wrong date or date format',
+                }
+            }
+            return null;
+        }
+    }
+
+    private getFormattedDate(date: string | Date) {
+        return `${new Date(date).getDate()}.${new Date(date).getMonth() + 1}.${new Date(date).getFullYear()}`
     }
 }

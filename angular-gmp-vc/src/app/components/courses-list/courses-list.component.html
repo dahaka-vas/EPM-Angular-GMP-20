@@ -1,5 +1,5 @@
 <div class="course-list">
-    <gmp-vc-search (search)="searchCourse($event)"></gmp-vc-search>
+    <gmp-vc-search class="course-list__search" (search)="searchCourse($event)"></gmp-vc-search>
     <button class="course-list__button course-list__button--add-course" (click)="addCourse()">Add course</button>
     <ng-container *ngIf="courseList.length">
         <gmp-vc-course-item

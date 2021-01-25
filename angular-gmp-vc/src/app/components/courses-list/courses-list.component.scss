@@ -4,6 +4,10 @@
     display: flex;
     flex-direction: column;
 
+    &__search {
+        width: 180px;
+    }
+
     &__no-data {
         border: none;
         border-radius: 6px;

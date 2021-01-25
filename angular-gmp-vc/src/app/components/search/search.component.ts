@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, takeUntil, throttleTime } from 'rxjs/operators';
 
@@ -12,12 +12,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     private searchStream$: Subject<string> = new Subject();
     private componentDestroyed$ = new Subject<void>();
 
+    @Input() public limitSearchTextLength = 3;
+
     @Output() public search = new EventEmitter<Observable<string>>();
 
     public ngOnInit(): void {
         console.log('CourseItemComponent -> ngOnInit');
         this.search.emit(this.searchStream$.pipe(
-            filter(searchText => !searchText || searchText.length >= 3),
+            filter(searchText => !searchText || searchText.length >= this.limitSearchTextLength),
             debounceTime(400),
             // throttleTime(400),
             distinctUntilChanged(),
