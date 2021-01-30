@@ -47,3 +47,25 @@ ul {
 em {
     background-color: $gold;
 }
+
+input {
+    &::-moz-placeholder {
+        color: #ACAFBF;
+        font-weight: 200;
+    }
+
+    &:-moz-placeholder {
+        color: #ACAFBF;
+        font-weight: 200;
+    }
+
+    &:-ms-input-placeholder {
+        color: #ACAFBF;
+        font-weight: 200;
+    }
+
+    &::-webkit-input-placeholder {
+        color:#ACAFBF;
+        font-weight: 200;
+    }
+}

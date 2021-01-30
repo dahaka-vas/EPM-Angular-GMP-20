@@ -5,7 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class HighlightPipe implements PipeTransform {
 
-    transform(value: string, textFragment: string): string {
-        return textFragment ? value.replace(textFragment, `<em>$&</em>`) : value;
+    transform(value: string = '', textFragment: string): string {
+        const regExp = new RegExp(textFragment, 'gi');
+        return textFragment ? value.replace(regExp, `<em>$&</em>`) : value;
     }
 }

@@ -1,7 +1,7 @@
 <div class="authors">
     <div class="authors__authors">
-        <div class="authors__input-wrapper">
-            <div class="authors__wrapper" #input (click)="openList(input)">
+        <div class="authors__input-wrapper" #dropdown>
+            <div class="authors__wrapper" #input (click)="openList(input, dropdown)">
                 <div *ngIf="!value?.length" class="placeholder">Select author</div>
                 <div class="value-container">
                     <div *ngFor="let val of value; let i=index" class="value-container__value">
@@ -14,7 +14,13 @@
                 </div>
             </div>
 
-            <div class="multiselect__dropdown" *ngIf="isOpened" [style.height.px]="dropdownHeight">
+            <div
+                *ngIf="isOpened"
+                class="multiselect__dropdown"
+                [style.height.px]="dropdownHeight"
+                [style.top.px]="dropdownTop"
+                [ngClass]="{'flex-reverse': flexReverse}"
+            >
                 <div class="authors__search">
                     <gmp-vc-search
                         [limitSearchTextLength]="1"

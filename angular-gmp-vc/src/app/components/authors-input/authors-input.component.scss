@@ -43,7 +43,12 @@
     box-shadow: 0 1px 2px 0 rgba(29, 30, 38, 0.102), 0 2px 10px 0 rgba(29, 30, 37, 0.15);
     display: flex;
     flex-direction: column;
+    user-select: none;
+}
 
+.flex-reverse {
+    flex-direction: column-reverse;
+    box-shadow: 0 -1px 2px 0 rgba(29, 30, 38, 0.102), 0 -2px 10px 0 rgba(29, 30, 37, 0.15);
 }
 
 ul {
@@ -68,7 +73,7 @@ ul {
 
 .placeholder {
     padding: 3px;
-    font-weight: 400;
+    font-weight: 300;
 }
 
 .value-container {
@@ -77,19 +82,18 @@ ul {
     &__remove {
         display: inline-flex;
         justify-content: center;
-        margin-left: 4px;
+        margin-left: 5px;
         cursor: pointer;
         position: relative;
-        border-radius: 50%;
-        background-color: red;
-        height: 0.8em;
-        width: 0.8em;
+        border-radius: 3px;
+        background-color: #d43e24;
+        height: 1em;
+        width: 1em;
 
         &:before {
-            display: inline-block;
             content: "x";
             position: absolute;
-            top: -0.35em;
+            top: -0.3em;
             font-size: 0.8em;
             color: $light-grey;
         }
@@ -109,23 +113,22 @@ ul {
     }
 }
 
-
-
-// ______________________
+.arrow-container {
+    padding: 0 6px;
+    cursor: pointer;
+}
 
 .arrow {
     width: 1em;
     height: 1em;
-    border-bottom: 2px solid $grey;
-    border-left: 2px solid $grey;
+    border-bottom: 2px solid #ACAFBF;
+    border-left: 2px solid #ACAFBF;
     border-radius: 2px;
-    margin-right: 10px;
     transform: rotate(-45deg);
     transition: all 0.5s cubic-bezier(0.25, 1.7, 0.35, 0.8);
     position: relative;
-    top: -0.25em;
     &.open {
-        top: 0.25em;
+        top: 0.5em;
         transform: rotate(135deg);
     }
 }

@@ -37,18 +37,13 @@
         padding: 9px 12px;
         outline: none;
         line-height: 18px;
-        color: #ACAFBF;
+        color: $dark-grey;
         border-radius: 3px;
         border: 1px solid #CED0DB;
         width: 100%;
 
         &--description {
             height: 108px;
-        }
-
-        &[placeholder] {
-            color: #ACAFBF;
-            font-weight: 200;
         }
 
         &::-moz-placeholder {

@@ -13,7 +13,7 @@ import { ICourseItem } from 'src/app/models/course.models';
 })
 export class AddCourseComponent implements OnInit {
     public form!: FormGroup;
-    public course!: ICourseItem | null;
+    public course: ICourseItem | null = null;
 
     private componentDestroyed$ = new Subject<void>();
 
@@ -40,9 +40,9 @@ export class AddCourseComponent implements OnInit {
                 this.form = this.fb.group({
                     name: [course.name, [Validators.required, Validators.maxLength(50)]],
                     description: [course.description, [Validators.required, Validators.maxLength(500)]],
-                    length: [course.length, [Validators.required, Validators.pattern(/^\d+$/g)]],
+                    length: [course.length, [Validators.required, this.getDurationValidator()]],
                     date: [this.getFormattedDate(course.date), [Validators.required, this.getDateValidator()]],
-                    authors: [course.authors, [this.getAuthorsValidator()]],
+                    authors: [course.authors || [], [this.getAuthorsValidator()]],
                 });
             });
     }
@@ -81,9 +81,25 @@ export class AddCourseComponent implements OnInit {
     private getDateValidator(): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
             const date = (control.value || '').toString();
-            const formatted = date.split('.').reverse();
+            const formattedDate = date.split('.').reverse();
 
-            if (Date.parse(formatted) !== Date.parse(formatted)) {
+            let [ year, month, day ] = formattedDate;
+            month = `${Number(month) === Number(month) ? +month - 1 : month}`;
+            const currentDate = new Date(year, month, day);
+            const isEquivalentDate = (
+                currentDate.getFullYear() === +year
+                && currentDate.getMonth() === +month
+                && currentDate.getDate() === +day
+            );
+
+            const isInvalidDate = (
+                formattedDate.length !== 3
+                || year.length !== 4
+                || !isEquivalentDate
+                || Date.parse(formattedDate) !== Date.parse(formattedDate)
+            );
+
+            if (isInvalidDate) {
                 return {
                     date: 'Wrong date or date format',
                 }
@@ -92,7 +108,21 @@ export class AddCourseComponent implements OnInit {
         }
     }
 
-    private getFormattedDate(date: string | Date) {
+    private getDurationValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const { value } = control;
+
+            if (Number(value) !== Number(value)) {
+                return {
+                    duration: 'Wrong value',
+                }
+            }
+            return null;
+        }
+    }
+
+    private getFormattedDate(date: string | Date): string {
+        if (!date) return '';
         return `${new Date(date).getDate()}.${new Date(date).getMonth() + 1}.${new Date(date).getFullYear()}`
     }
 }
