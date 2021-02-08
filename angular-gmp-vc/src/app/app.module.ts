@@ -26,6 +26,7 @@ import { AuthorsInputComponent } from './components/authors-input/authors-input.
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { TokenInterceptor } from './interceptors/authentication.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
+import { HighlightPipe } from './pipes/highlight.pipe';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { LoadingComponent } from './components/loading/loading.component';
         AuthorsInputComponent,
         NotFoundPageComponent,
         LoadingComponent,
+        HighlightPipe,
     ],
     imports: [
         AppRoutingModule,

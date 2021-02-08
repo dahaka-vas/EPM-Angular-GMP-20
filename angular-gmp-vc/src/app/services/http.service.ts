@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IAuthors, ICourseItem } from '../models/course.models';
+import { IAuthor, ICourseItem } from '../models/course.models';
 import { IAuthorizationResponse } from '../models/http.models';
 import { IUser } from '../models/user.models';
 import { LoadingService } from './loading.service';
@@ -62,14 +62,14 @@ export class HttpService {
 
 
     // TODO: Implement authors list in the app
-    public getAuthors(params: { textFragment: string }): Observable<IAuthors> {
-        const request = this.http.get<IAuthors>(`${this.baseUrl}/auth/login`, { params });
-        return this.loadingService.loadingUp(request);
+    public getAuthors(params?: { textFragment: string }): Observable<IAuthor[]> {
+        const request = this.http.get<IAuthor[]>(`${this.baseUrl}/authors`, { params });
+        return request;
     }
 
 
     public getErrors(params: { code: number }): Observable<any> {
-        const request = this.http.post<any>(`${this.baseUrl}/auth/login`, { params });
-        return this.loadingService.loadingUp(request);
+        const request = this.http.post<any>(`${this.baseUrl}/error`, { params });
+        return request;
     }
 }

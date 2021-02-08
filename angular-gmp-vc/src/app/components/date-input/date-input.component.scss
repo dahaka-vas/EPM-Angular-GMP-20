@@ -1,3 +1,5 @@
+@import "../../../scss/colors.scss";
+
 .date {
 
     &__input {
@@ -6,7 +8,7 @@
         padding: 9px 12px;
         outline: none;
         line-height: 18px;
-        color: #ACAFBF;
+        color: $dark-grey;
         border-radius: 3px;
         border: 1px solid #CED0DB;
         width: 100%;
